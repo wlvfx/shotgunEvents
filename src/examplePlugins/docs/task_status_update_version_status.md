@@ -2,7 +2,7 @@
 
 When a HumanUser updates a Task's Status, find the latest Version in Shotgun
 whose Task matches the relevant Task, and update that Version's Status to the
-value defined defined by the Status' `status_mapping_field`. If the
+value defined by the Status' `status_mapping_field`. If the
 `status_mapping_field` value is blank or not present on the Version, do not
 update the Version Status field.
 

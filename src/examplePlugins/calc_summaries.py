@@ -138,7 +138,11 @@ def is_valid(sg, logger, args):
 
         # Make sure the field we want to summarize is on our entity.
         if not check_entity_schema(
-            sg, summary_item["entity_type"], summary_item["field"], valid_fields,
+            sg,
+            logger,
+            summary_item["entity_type"],
+            summary_item["field"],
+            valid_fields,
         ):
             return
 
@@ -223,6 +227,7 @@ def is_valid(sg, logger, args):
         # Can check the linked entity_type field schema for field_to_update.
         if not check_entity_schema(
             sg,
+            logger,
             summarize_entity_type,
             args["field_to_update"],
             ["number", "float", "currency", "text", "percent"],
@@ -232,11 +237,12 @@ def is_valid(sg, logger, args):
     return True
 
 
-def check_entity_schema(sg, entity_type, field_name, field_type=None):
+def check_entity_schema(sg, logger, entity_type, field_name, field_type=None):
     """
     Verifies that field_name of field_type exists in entity_type's schema.
 
     :param sg: An authenticated Shotgun Python API instance.
+    :param logger: Logger instance.
     :param entity_type: String, a Shotgun entity type.
     :param field_name: String, the name of a field on entity_type.
     :param field_type: List of strings, the Shotgun field type field_name should be.

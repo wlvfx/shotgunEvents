@@ -28,7 +28,6 @@ from __future__ import print_function
 __version__ = "0.9"
 __version_info__ = (0, 9)
 
-import ConfigParser
 import datetime
 import imp
 import logging
@@ -39,6 +38,7 @@ import socket
 import sys
 import time
 import traceback
+from six.moves import configparser
 
 from distutils.version import StrictVersion
 
@@ -147,9 +147,9 @@ def _addMailHandlerToLogger(
         logger.addHandler(mailHandler)
 
 
-class Config(ConfigParser.ConfigParser):
+class Config(configparser.ConfigParser):
     def __init__(self, path):
-        ConfigParser.ConfigParser.__init__(self)
+        configparser.ConfigParser.__init__(self)
         self.read(path)
 
     def getShotgunURL(self):
@@ -167,7 +167,7 @@ class Config(ConfigParser.ConfigParser):
             if not proxy_server:
                 return None
             return proxy_server
-        except ConfigParser.NoOptionError:
+        except configparser.NoOptionError:
             return None
 
     def getEventIdFile(self):
@@ -392,7 +392,7 @@ class Engine(object):
 
         if eventIdFile and os.path.exists(eventIdFile):
             try:
-                fh = open(eventIdFile)
+                fh = open(eventIdFile, "rb")
                 try:
                     self._eventIdData = pickle.load(fh)
 
@@ -438,7 +438,7 @@ class Engine(object):
 
                     # Backwards compatibility:
                     # Reopen the file to try to read an old-style int
-                    fh = open(eventIdFile)
+                    fh = open(eventIdFile, "rb")
                     line = fh.readline().strip()
                     if line.isdigit():
                         # The _loadEventIdData got an old-style id file containing a single
@@ -609,9 +609,8 @@ class Engine(object):
             for colPath, state in self._eventIdData.items():
                 if state:
                     try:
-                        fh = open(eventIdFile, "w")
-                        pickle.dump(self._eventIdData, fh)
-                        fh.close()
+                        with open(eventIdFile, "wb") as fh:
+                            pickle.dump(self._eventIdData, fh)
                     except OSError as err:
                         self.log.error(
                             "Can not write event id data to %s.\n\n%s",
