@@ -28,7 +28,7 @@ def registerCallbacks(reg):
     args = {
         "entity_type": "Shot",
         "source_frames_field": "sg_cut_duration",
-        "target_tc_field": "sg_cut_length_r_t",
+        "target_tc_field": "sg_cut_length_tc",
         "fps": 24.0,
     }
 
