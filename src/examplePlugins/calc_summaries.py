@@ -174,7 +174,9 @@ def is_valid(sg, logger, args):
         )
 
         # Grab the data type for the linked field.
-        data_type = link_field_schema[list(link_field_schema.keys())[0]]["data_type"]["value"]
+        data_type = link_field_schema[list(link_field_schema.keys())[0]]["data_type"][
+            "value"
+        ]
 
         # Bail if we don't have a single-entity field.
         if data_type != "entity":
@@ -189,9 +191,9 @@ def is_valid(sg, logger, args):
             return
 
         # Get the valid entity types for the linked field.
-        entity_links = link_field_schema[list(link_field_schema.keys())[0]]["properties"][
-            "valid_types"
-        ]["value"]
+        entity_links = link_field_schema[list(link_field_schema.keys())[0]][
+            "properties"
+        ]["valid_types"]["value"]
 
         # Bail if we have more than one valid type. Things get a bit crazy if we
         # have to check for fields on more than one entity type that may or may
