@@ -2,8 +2,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Linting](https://img.shields.io/badge/PEP8%20by-Hound%20CI-a873d1.svg)](https://houndci.com)
 
-
-
 # Shotgun Event Framework
 This software was originaly developed by [Patrick
 Boucher](http://www.patrickboucher.com) with support from [Rodeo
