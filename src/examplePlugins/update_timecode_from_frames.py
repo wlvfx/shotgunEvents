@@ -28,7 +28,7 @@ def registerCallbacks(reg):
     args = {
         "entity_type": "Shot",
         "source_frames_field": "sg_cut_duration",
-        "target_tc_field": "sg_cut_length_tc",
+        "target_tc_field": "sg_cut_length_r_t",
         "fps": 24.0,
     }
 
@@ -75,7 +75,7 @@ def is_valid(sg, logger, args):
         )
         return
 
-    for name, type_targets in args_to_check.iteritems():
+    for name, type_targets in args_to_check.items():
 
         # Grab the setting's value type.
         value_type = type(args[name]).__name__

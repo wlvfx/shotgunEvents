@@ -95,7 +95,7 @@ def is_valid(sg, logger, args):
     }
 
     # Check our args.
-    for name, checks in args_to_check.iteritems():
+    for name, checks in args_to_check.items():
 
         # Grab the setting's value type.
         value_type = type(args[name])
@@ -174,7 +174,7 @@ def is_valid(sg, logger, args):
         )
 
         # Grab the data type for the linked field.
-        data_type = link_field_schema[link_field_schema.keys()[0]]["data_type"]["value"]
+        data_type = link_field_schema[list(link_field_schema.keys())[0]]["data_type"]["value"]
 
         # Bail if we don't have a single-entity field.
         if data_type != "entity":
@@ -189,7 +189,7 @@ def is_valid(sg, logger, args):
             return
 
         # Get the valid entity types for the linked field.
-        entity_links = link_field_schema[link_field_schema.keys()[0]]["properties"][
+        entity_links = link_field_schema[list(link_field_schema.keys())[0]]["properties"][
             "valid_types"
         ]["value"]
 
