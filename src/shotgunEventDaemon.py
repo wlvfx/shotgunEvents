@@ -39,13 +39,9 @@ import sys
 import time
 import traceback
 from six.moves import configparser
+import six.moves.cPickle as pickle
 
 from distutils.version import StrictVersion
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
 
 if sys.platform == "win32":
     import win32serviceutil
@@ -610,7 +606,8 @@ class Engine(object):
                 if state:
                     try:
                         with open(eventIdFile, "wb") as fh:
-                            pickle.dump(self._eventIdData, fh)
+                            # Use protocol 2 so it can also be loaded in Python 2
+                            pickle.dump(self._eventIdData, fh, protocol=2)
                     except OSError as err:
                         self.log.error(
                             "Can not write event id data to %s.\n\n%s",
