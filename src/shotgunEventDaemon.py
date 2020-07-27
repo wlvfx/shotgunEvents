@@ -28,8 +28,14 @@ from __future__ import print_function
 __version__ = "0.9"
 __version_info__ = (0, 9)
 
+# Suppress the deprecation warning about imp until we get around to replacing it
+import warnings
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import imp
+
 import datetime
-import imp
 import logging
 import logging.handlers
 import os
