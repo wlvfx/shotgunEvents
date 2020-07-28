@@ -68,8 +68,6 @@ def is_valid(sg, logger, args):
     :returns: True if plugin is valid, None if not.
     """
 
-    logger.info("hey!")
-
     args_to_check = {
         "fps": {"type": ["float"]},
         "cut_in_field": {"sg_type": ["number"], "type": ["str"]},
@@ -88,7 +86,7 @@ def is_valid(sg, logger, args):
         )
         return
 
-    for name, type_targets in args_to_check.iteritems():
+    for name, type_targets in args_to_check.items():
 
         # Grab the setting's value type.
         value_type = type(args[name]).__name__

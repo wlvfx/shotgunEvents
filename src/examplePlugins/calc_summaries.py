@@ -95,7 +95,7 @@ def is_valid(sg, logger, args):
     }
 
     # Check our args.
-    for name, checks in args_to_check.iteritems():
+    for name, checks in args_to_check.items():
 
         # Grab the setting's value type.
         value_type = type(args[name])
@@ -138,7 +138,11 @@ def is_valid(sg, logger, args):
 
         # Make sure the field we want to summarize is on our entity.
         if not check_entity_schema(
-            sg, summary_item["entity_type"], summary_item["field"], valid_fields,
+            sg,
+            logger,
+            summary_item["entity_type"],
+            summary_item["field"],
+            valid_fields,
         ):
             return
 
@@ -170,7 +174,9 @@ def is_valid(sg, logger, args):
         )
 
         # Grab the data type for the linked field.
-        data_type = link_field_schema[link_field_schema.keys()[0]]["data_type"]["value"]
+        data_type = link_field_schema[list(link_field_schema.keys())[0]]["data_type"][
+            "value"
+        ]
 
         # Bail if we don't have a single-entity field.
         if data_type != "entity":
@@ -185,9 +191,9 @@ def is_valid(sg, logger, args):
             return
 
         # Get the valid entity types for the linked field.
-        entity_links = link_field_schema[link_field_schema.keys()[0]]["properties"][
-            "valid_types"
-        ]["value"]
+        entity_links = link_field_schema[list(link_field_schema.keys())[0]][
+            "properties"
+        ]["valid_types"]["value"]
 
         # Bail if we have more than one valid type. Things get a bit crazy if we
         # have to check for fields on more than one entity type that may or may
@@ -223,6 +229,7 @@ def is_valid(sg, logger, args):
         # Can check the linked entity_type field schema for field_to_update.
         if not check_entity_schema(
             sg,
+            logger,
             summarize_entity_type,
             args["field_to_update"],
             ["number", "float", "currency", "text", "percent"],
@@ -232,11 +239,12 @@ def is_valid(sg, logger, args):
     return True
 
 
-def check_entity_schema(sg, entity_type, field_name, field_type=None):
+def check_entity_schema(sg, logger, entity_type, field_name, field_type=None):
     """
     Verifies that field_name of field_type exists in entity_type's schema.
 
     :param sg: An authenticated Shotgun Python API instance.
+    :param logger: Logger instance.
     :param entity_type: String, a Shotgun entity type.
     :param field_name: String, the name of a field on entity_type.
     :param field_type: List of strings, the Shotgun field type field_name should be.

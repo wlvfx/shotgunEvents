@@ -69,19 +69,20 @@ class Daemon(object):
         # redirect standard file descriptors
         sys.stdout.flush()
         sys.stderr.flush()
-        si = file(self._stdin, "r")
-        so = file(self._stdout, "a+")
-        se = file(self._stderr, "a+", 0)
+        si = open(self._stdin, "r")
+        so = open(self._stdout, "a+")
+        se = open(self._stderr, "a+", 0)
         os.dup2(si.fileno(), sys.stdin.fileno())
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())
 
         # write pidfile and subsys file
         pid = str(os.getpid())
-        file(self._pidfile, "w+").write("%s\n" % pid)
+        with open(self._pidfile, "w+") as f:
+            f.write("%s\n" % pid)
         if os.path.exists("/var/lock/subsys"):
-            fh = open(os.path.join("/var/lock/subsys", self._serviceName), "w")
-            fh.close()
+            with open(os.path.join("/var/lock/subsys", self._serviceName), "w") as f:
+                pass
 
     def _delpid(self):
         if os.path.exists(self._pidfile):
@@ -99,9 +100,8 @@ class Daemon(object):
         """
         # Check for a pidfile to see if the daemon already runs
         try:
-            pf = file(self._pidfile, "r")
-            pid = int(pf.read().strip())
-            pf.close()
+            with open(self._pidfile, "r") as pf:
+                pid = int(pf.read().strip())
         except IOError:
             pid = None
 
@@ -130,9 +130,8 @@ class Daemon(object):
         """
         # Get the pid from the pidfile
         try:
-            pf = file(self._pidfile, "r")
-            pid = int(pf.read().strip())
-            pf.close()
+            with open(self._pidfile, "r") as pf:
+                pid = int(pf.read().strip())
         except IOError:
             pid = None
 

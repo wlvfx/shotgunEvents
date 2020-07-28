@@ -28,9 +28,14 @@ from __future__ import print_function
 __version__ = "0.9"
 __version_info__ = (0, 9)
 
-import ConfigParser
+# Suppress the deprecation warning about imp until we get around to replacing it
+import warnings
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import imp
+
 import datetime
-import imp
 import logging
 import logging.handlers
 import os
@@ -39,13 +44,10 @@ import socket
 import sys
 import time
 import traceback
+from six.moves import configparser
+import six.moves.cPickle as pickle
 
 from distutils.version import StrictVersion
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
 
 if sys.platform == "win32":
     import win32serviceutil
@@ -147,9 +149,9 @@ def _addMailHandlerToLogger(
         logger.addHandler(mailHandler)
 
 
-class Config(ConfigParser.ConfigParser):
+class Config(configparser.ConfigParser):
     def __init__(self, path):
-        ConfigParser.ConfigParser.__init__(self)
+        configparser.ConfigParser.__init__(self)
         self.read(path)
 
     def getShotgunURL(self):
@@ -167,7 +169,7 @@ class Config(ConfigParser.ConfigParser):
             if not proxy_server:
                 return None
             return proxy_server
-        except ConfigParser.NoOptionError:
+        except configparser.NoOptionError:
             return None
 
     def getEventIdFile(self):
@@ -392,7 +394,7 @@ class Engine(object):
 
         if eventIdFile and os.path.exists(eventIdFile):
             try:
-                fh = open(eventIdFile)
+                fh = open(eventIdFile, "rb")
                 try:
                     self._eventIdData = pickle.load(fh)
 
@@ -438,7 +440,7 @@ class Engine(object):
 
                     # Backwards compatibility:
                     # Reopen the file to try to read an old-style int
-                    fh = open(eventIdFile)
+                    fh = open(eventIdFile, "rb")
                     line = fh.readline().strip()
                     if line.isdigit():
                         # The _loadEventIdData got an old-style id file containing a single
@@ -609,9 +611,9 @@ class Engine(object):
             for colPath, state in self._eventIdData.items():
                 if state:
                     try:
-                        fh = open(eventIdFile, "w")
-                        pickle.dump(self._eventIdData, fh)
-                        fh.close()
+                        with open(eventIdFile, "wb") as fh:
+                            # Use protocol 2 so it can also be loaded in Python 2
+                            pickle.dump(self._eventIdData, fh, protocol=2)
                     except OSError as err:
                         self.log.error(
                             "Can not write event id data to %s.\n\n%s",
