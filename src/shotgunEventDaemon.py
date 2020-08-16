@@ -25,8 +25,8 @@ http://shotgunsoftware.github.com/shotgunEvents
 
 from __future__ import print_function
 
-__version__ = "0.9"
-__version_info__ = (0, 9)
+__version__ = "1.0"
+__version_info__ = (1, 0)
 
 # Suppress the deprecation warning about imp until we get around to replacing it
 import warnings
@@ -149,9 +149,9 @@ def _addMailHandlerToLogger(
         logger.addHandler(mailHandler)
 
 
-class Config(configparser.ConfigParser):
+class Config(configparser.SafeConfigParser):
     def __init__(self, path):
-        configparser.ConfigParser.__init__(self)
+        configparser.SafeConfigParser.__init__(self, os.environ)
         self.read(path)
 
     def getShotgunURL(self):
@@ -366,7 +366,7 @@ class Engine(object):
         socket.setdefaulttimeout(60)
 
         # Notify which version of shotgun api we are using
-        self.log.info("Using Shotgun version %s" % sg.__version__)
+        self.log.info("Using Shotgun Python API version %s" % sg.__version__)
 
         try:
             for collection in self._pluginCollections:
