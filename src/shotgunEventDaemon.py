@@ -785,7 +785,7 @@ class Plugin(object):
             nextId = None
 
         now = datetime.datetime.now()
-        for k in self._backlog.keys():
+        for k in list(self._backlog):
             v = self._backlog[k]
             if v < now:
                 self.logger.warning("Timeout elapsed on backlog event id %d.", k)
