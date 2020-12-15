@@ -66,8 +66,8 @@ class Daemon(object):
             sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
 
-        # redirect standard file descriptors
-        # unless specified when instantiating the class the will
+        # redirect standard file descriptors.
+        # Unless specified when instantiating the class, it will
         # by default redirect the stdin, stdout, stderr to a null file
         # which is the equivalent of discarding the output.
         sys.stdout.flush()
