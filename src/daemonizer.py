@@ -67,11 +67,14 @@ class Daemon(object):
             sys.exit(1)
 
         # redirect standard file descriptors
+        # unless specified when instantiating the class the will
+        # by default redirect the stdin, stdout, stderr to a null file
+        # which is the equivalent of discarding the output.
         sys.stdout.flush()
         sys.stderr.flush()
         si = open(self._stdin, "r")
         so = open(self._stdout, "a+")
-        se = open(self._stderr, "a+", 0)
+        se = open(self._stderr, "a+b", 0)
         os.dup2(si.fileno(), sys.stdin.fileno())
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())
