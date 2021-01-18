@@ -66,12 +66,15 @@ class Daemon(object):
             sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
 
-        # redirect standard file descriptors
+        # redirect standard file descriptors.
+        # Unless specified when instantiating the class, it will
+        # by default redirect the stdin, stdout, stderr to a null file
+        # which is the equivalent of discarding the output.
         sys.stdout.flush()
         sys.stderr.flush()
         si = open(self._stdin, "r")
         so = open(self._stdout, "a+")
-        se = open(self._stderr, "a+", 0)
+        se = open(self._stderr, "a+b", 0)
         os.dup2(si.fileno(), sys.stdin.fileno())
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())

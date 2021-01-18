@@ -11,8 +11,7 @@ Fx](http://rodeofx.com) and [Oblique](http://obliquefx.com). It is now part of
 initiative](https://github.com/shotgunsoftware).
 
 This software is provided under the MIT License that can be found in the LICENSE
-file or at the [Open Source Initiative](http://www.opensource.org/licenses/mit-
-license.php) website.
+file or at the [Open Source Initiative](http://www.opensource.org/licenses/mit-license.php) website.
 
 
 ## Overview
