@@ -6,7 +6,7 @@
 # Shotgun Event Framework
 This software was originaly developed by [Patrick
 Boucher](http://www.patrickboucher.com) with support from [Rodeo
-Fx](http://rodeofx.com) and [Oblique](http://obliquefx.com). It is now part of
+Fx](http://rodeofx.com) and Oblique. It is now part of
 [Shotgun Software](http://www.shotgunsoftware.com)'s [open source
 initiative](https://github.com/shotgunsoftware).
 
