@@ -91,7 +91,9 @@ def assign_to_project(sg, logger, event, args):
             users.append(task_assignee)
         elif task_assignee["type"] == "Group":
             group = sg.find_one(
-                "Group", [["id", "is", task_assignee["id"]]], ["users"],
+                "Group",
+                [["id", "is", task_assignee["id"]]],
+                ["users"],
             )
             for user in group["users"]:
                 if user["type"] == "HumanUser":
@@ -104,7 +106,11 @@ def assign_to_project(sg, logger, event, args):
     for user in users:
 
         # Grab the user's assigned Projects.
-        user = sg.find_one("HumanUser", [["id", "is", user["id"]]], ["projects"],)
+        user = sg.find_one(
+            "HumanUser",
+            [["id", "is", user["id"]]],
+            ["projects"],
+        )
 
         # Check to see if the user is assigned to the Project.
         assigned = False
@@ -119,7 +125,9 @@ def assign_to_project(sg, logger, event, args):
                     "request_type": "update",
                     "entity_type": "HumanUser",
                     "entity_id": user["id"],
-                    "data": {"projects": user["projects"] + [event_project],},
+                    "data": {
+                        "projects": user["projects"] + [event_project],
+                    },
                 }
             )
             logger.info(

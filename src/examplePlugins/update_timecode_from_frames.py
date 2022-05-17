@@ -45,7 +45,11 @@ def registerCallbacks(reg):
     }
 
     reg.registerCallback(
-        script_name, script_key, update_shot_cut_duration_timecode, event_filter, args,
+        script_name,
+        script_key,
+        update_shot_cut_duration_timecode,
+        event_filter,
+        args,
     )
 
 
@@ -106,7 +110,11 @@ def is_valid(sg, logger, args):
         if not sg_type:
             logger.warning(
                 '"%s" setting refers to a %s entity field ("%s") that doesn\'t exist, please fix.'
-                % (name, args["entity_type"], args[name],)
+                % (
+                    name,
+                    args["entity_type"],
+                    args[name],
+                )
             )
             return
 
@@ -141,7 +149,9 @@ def update_shot_cut_duration_timecode(sg, logger, event, args):
 
     # Re-query the entity to gather extra field values.
     entity = sg.find_one(
-        args["entity_type"], [["id", "is", entity_id]], [args["source_frames_field"]],
+        args["entity_type"],
+        [["id", "is", entity_id]],
+        [args["source_frames_field"]],
     )
 
     # Return if we don't have an entity dict.

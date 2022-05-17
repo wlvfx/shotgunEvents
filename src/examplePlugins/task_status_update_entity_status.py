@@ -108,7 +108,11 @@ def update_entity_status(sg, logger, event, args):
         # current Task, which is probably a good thing, in case its status has
         # been changed.
         tasks = sg.find(
-            "Task", [["entity", "is", task["entity"]],], [args["task_status_field"]],
+            "Task",
+            [
+                ["entity", "is", task["entity"]],
+            ],
+            [args["task_status_field"]],
         )
 
         # Determine if all those Tasks are set to fin_status.

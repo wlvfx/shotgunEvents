@@ -141,7 +141,8 @@ def version_status_changed(sg, logger, event, args):
         # there's also a possibility the sg_date_approved field is a date instead
         # of a datetime, check that in the schema
         date_approved_field_type = sg.schema_field_read(
-            "Version", args["date_approved_field"],
+            "Version",
+            args["date_approved_field"],
         )[args["date_approved_field"]]["data_type"]["value"]
         # if the field type is date, update the var accordingly
         if date_approved_field_type == "date":
@@ -153,7 +154,9 @@ def version_status_changed(sg, logger, event, args):
                 "request_type": "update",
                 "entity_type": "Version",
                 "entity_id": entity_id,
-                "data": {args["date_approved_field"]: approved_date,},
+                "data": {
+                    args["date_approved_field"]: approved_date,
+                },
             }
         )
 

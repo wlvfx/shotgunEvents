@@ -189,7 +189,9 @@ def build_updates_for_downstream_tasks(sg, logger, task, batch_updates, args):
         if len(downstream_task[args["upstream_tasks_field"]]) > 1:
             for upstream_task in downstream_task[args["upstream_tasks_field"]]:
                 upstream_task = sg.find_one(
-                    "Task", [["id", "is", upstream_task["id"]]], ["sg_status_list"],
+                    "Task",
+                    [["id", "is", upstream_task["id"]]],
+                    ["sg_status_list"],
                 )
                 if (
                     upstream_task["sg_status_list"] not in args["task_status"]

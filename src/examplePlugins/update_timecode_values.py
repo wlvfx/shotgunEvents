@@ -58,7 +58,11 @@ def registerCallbacks(reg):
     }
 
     reg.registerCallback(
-        script_name, script_key, update_timecode_and_frame_values, event_filter, args,
+        script_name,
+        script_key,
+        update_timecode_and_frame_values,
+        event_filter,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -89,7 +93,10 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type):
     if not sg_type:
         logger.warning(
             '%s entity field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_name,)
+            % (
+                entity_type,
+                field_name,
+            )
         )
         return
 
@@ -429,10 +436,18 @@ def update_timecode_and_frame_values(sg, logger, event, args):
         sg.update(entity_type, entity_id, update_data)
         logger.info(
             "%s %s updated with %s."
-            % (entity_type, entity[args["entity_name_field"]], update_data,)
+            % (
+                entity_type,
+                entity[args["entity_name_field"]],
+                update_data,
+            )
         )
     else:
         logger.info(
             "Nothing to update on %s %s with id %s."
-            % (entity_type, entity[args["entity_name_field"]], entity_id,)
+            % (
+                entity_type,
+                entity[args["entity_name_field"]],
+                entity_id,
+            )
         )

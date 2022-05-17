@@ -92,7 +92,10 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type):
     if not sg_type:
         logger.warning(
             '%s entity field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_name,)
+            % (
+                entity_type,
+                field_name,
+            )
         )
         return
 
@@ -147,7 +150,10 @@ def is_valid(sg, logger, args):
     if args["operator"] not in operator_types:
         logger.warning(
             'operator value is "%s", but must be of type %s, please fix.'
-            % (args["operator"], operator_types,)
+            % (
+                args["operator"],
+                operator_types,
+            )
         )
         return
 
@@ -248,13 +254,20 @@ def update_field_value(sg, logger, event, args):
         num_2 = float(field_b_val)
 
     # Re-query the entity to get updated field values.
-    entity = sg.find_one(entity_type, [["id", "is", entity_id]], fields,)
+    entity = sg.find_one(
+        entity_type,
+        [["id", "is", entity_id]],
+        fields,
+    )
 
     # Bail if the entity no longer exists.
     if not entity:
         logger.debug(
             "%s entity with id %s no longer exists, skipping..."
-            % (entity_type, entity_id,)
+            % (
+                entity_type,
+                entity_id,
+            )
         )
         return
 
@@ -317,7 +330,9 @@ def update_field_value(sg, logger, event, args):
     # fail with a CRUD error if a result value is not a current list option.
     try:
         sg.update(
-            entity_type, entity_id, {args["field_to_update"]: result},
+            entity_type,
+            entity_id,
+            {args["field_to_update"]: result},
         )
     except Exception as e:
         logger.error("Could not update Shotgun, skipping: %s" % str(e))
@@ -326,5 +341,10 @@ def update_field_value(sg, logger, event, args):
     # Tell the logger all about it.
     logger.info(
         "Updated %s field on %s entity (id %s) with new value: %s."
-        % (args["field_to_update"], entity_type, entity_id, result,)
+        % (
+            args["field_to_update"],
+            entity_type,
+            entity_id,
+            result,
+        )
     )

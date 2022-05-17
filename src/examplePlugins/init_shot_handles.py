@@ -33,7 +33,11 @@ def registerCallbacks(reg):
     }
 
     reg.registerCallback(
-        script_name, script_key, init_shot_handles, event_filter, args,
+        script_name,
+        script_key,
+        init_shot_handles,
+        event_filter,
+        args,
     )
 
 

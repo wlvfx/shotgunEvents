@@ -58,7 +58,11 @@ def update_status_when_note_is_created(sg, logger, event, args):
     note_id = event["meta"]["entity_id"]
 
     # Re-query our Note for additional field values.
-    note = sg.find_one("Note", [["id", "is", note_id]], ["note_links"],)
+    note = sg.find_one(
+        "Note",
+        [["id", "is", note_id]],
+        ["note_links"],
+    )
 
     # Return if the Note doesn't exist.
     if not note:
@@ -96,7 +100,10 @@ def update_status_when_note_is_created(sg, logger, event, args):
         if not entity:
             logger.debug(
                 "Could not find linked %s with id %s, skipping."
-                % (args["entity_type"], entity["id"],)
+                % (
+                    args["entity_type"],
+                    entity["id"],
+                )
             )
             continue
 
@@ -104,7 +111,11 @@ def update_status_when_note_is_created(sg, logger, event, args):
         if entity[args["status_field"]] not in args["trigger_statuses"]:
             logger.debug(
                 "Linked %s with id %s does not have a status of %s, skipping update."
-                % (args["entity_type"], entity["id"], args["trigger_statuses"],)
+                % (
+                    args["entity_type"],
+                    entity["id"],
+                    args["trigger_statuses"],
+                )
             )
             continue
 
