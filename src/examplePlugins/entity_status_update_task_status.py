@@ -68,7 +68,11 @@ def registerCallbacks(reg):
 
     # Register our function with the dameon, and pass in our args.
     reg.registerCallback(
-        script_name, script_key, entity_status_update_task_status, eventFilter, args,
+        script_name,
+        script_key,
+        entity_status_update_task_status,
+        eventFilter,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -86,12 +90,17 @@ def is_valid(sg, logger, args):
     # Make sure args["entity_status_field"] is still in our entity schema.
     try:
         entity_schema = sg.schema_field_read(
-            args["entity_type"], field_name=args["entity_status_field"],
+            args["entity_type"],
+            field_name=args["entity_status_field"],
         )
     except Exception as e:
         logger.warning(
             "%s does not exist in %s schema, skipping: %s"
-            % (args["entity_status_field"], args["entity_type"], e.message,)
+            % (
+                args["entity_status_field"],
+                args["entity_type"],
+                e.message,
+            )
         )
         return
 
@@ -102,12 +111,18 @@ def is_valid(sg, logger, args):
     ):
         logger.warning(
             "%s is not in %s schema, plugin will never execute."
-            % (args["target_status"], args["entity_type"],)
+            % (
+                args["target_status"],
+                args["entity_type"],
+            )
         )
         return
 
     # Make sure the Task schema has an args["target_status"] field.
-    task_schema = sg.schema_field_read("Task", field_name="sg_status_list",)
+    task_schema = sg.schema_field_read(
+        "Task",
+        field_name="sg_status_list",
+    )
     if (
         args["target_status"]
         not in task_schema["sg_status_list"]["properties"]["valid_values"]["value"]
@@ -155,7 +170,11 @@ def entity_status_update_task_status(sg, logger, event, args):
         return
 
     # Make sure the event exists in Shotgun.
-    sg_event = sg.find_one("EventLogEntry", [["id", "is", event_id]], ["description"],)
+    sg_event = sg.find_one(
+        "EventLogEntry",
+        [["id", "is", event_id]],
+        ["description"],
+    )
     if not sg_event:
         logger.warning("Could not find event with id %s, skipping." % event_id)
         return
@@ -165,13 +184,19 @@ def entity_status_update_task_status(sg, logger, event, args):
 
     # Re-query our entity for updated field values.
     entity = sg.find_one(
-        entity["type"], [["id", "is", entity["id"]]], [field_name, "description"],
+        entity["type"],
+        [["id", "is", entity["id"]]],
+        [field_name, "description"],
     )
 
     # Bail if our entity doesn't exist.
     if not entity:
         logger.warning(
-            "%s with id %s does not exist, skipping." % (entity["type"], entity["id"],)
+            "%s with id %s does not exist, skipping."
+            % (
+                entity["type"],
+                entity["id"],
+            )
         )
         return
 
@@ -179,7 +204,12 @@ def entity_status_update_task_status(sg, logger, event, args):
     if not entity[field_name] == new_value:
         logger.warning(
             "%s with id %s's %s has changed from %s since event inception."
-            % (entity["type"], entity["id"], field_name, new_value,)
+            % (
+                entity["type"],
+                entity["id"],
+                field_name,
+                new_value,
+            )
         )
         return
 
@@ -198,13 +228,21 @@ def entity_status_update_task_status(sg, logger, event, args):
                 "entity_id": entity["id"],
                 "data": {
                     "description": "%s set this %s to %s."
-                    % (user["name"], entity["type"], args["target_status"],)
+                    % (
+                        user["name"],
+                        entity["type"],
+                        args["target_status"],
+                    )
                 },
             }
         )
 
     # Find all the Tasks linked to our entity.
-    tasks = sg.find("Task", [["entity", "is", entity]], ["sg_status_list"],)
+    tasks = sg.find(
+        "Task",
+        [["entity", "is", entity]],
+        ["sg_status_list"],
+    )
 
     # Cue up a change to all our Tasks. Set them to args["target_status"].
     for task in tasks:

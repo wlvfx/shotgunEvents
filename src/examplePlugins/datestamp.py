@@ -61,7 +61,11 @@ def registerCallbacks(reg):
     # Register our callback with the Shotgun_%s_Change event and tell the logger
     # about it.
     reg.registerCallback(
-        script_name, script_key, set_datestamp, event_filter, args,
+        script_name,
+        script_key,
+        set_datestamp,
+        event_filter,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -94,7 +98,10 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type, values=
     if not sg_type:
         logger.warning(
             '%s entity field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_name,)
+            % (
+                entity_type,
+                field_name,
+            )
         )
         return
 
@@ -112,7 +119,12 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type, values=
         if value not in valid_values:
             logger.warning(
                 '%s field "%s" does not accept value "%s", only %s, please fix.'
-                % (entity_type, field_name, value, valid_values,)
+                % (
+                    entity_type,
+                    field_name,
+                    value,
+                    valid_values,
+                )
             )
             return
 
@@ -142,7 +154,11 @@ def is_valid(sg, logger, args):
             ):
                 return
         if not check_entity_schema(
-            sg, logger, entity_type, args["date_field"], ["date_time", "date"],
+            sg,
+            logger,
+            entity_type,
+            args["date_field"],
+            ["date_time", "date"],
         ):
             return
 
@@ -229,11 +245,20 @@ def set_datestamp(sg, logger, event, args):
 
     # Gather the date or timestamp data appropriate for the date field type.
     date_or_timestamp = get_date_or_timestamp(
-        logger, sg, event, entity_type, args["date_field"], args["timezone"],
+        logger,
+        sg,
+        event,
+        entity_type,
+        args["date_field"],
+        args["timezone"],
     )
 
     # Update the date field on our entity.
-    result = sg.update(entity_type, entity_id, {args["date_field"]: date_or_timestamp},)
+    result = sg.update(
+        entity_type,
+        entity_id,
+        {args["date_field"]: date_or_timestamp},
+    )
 
     logger.info("Updated date: %s." % result)
 

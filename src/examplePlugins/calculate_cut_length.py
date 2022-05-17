@@ -53,7 +53,11 @@ def registerCallbacks(reg):
     }
 
     reg.registerCallback(
-        script_name, script_key, update_cut_duration_timecode, event_filter, args,
+        script_name,
+        script_key,
+        update_cut_duration_timecode,
+        event_filter,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -117,7 +121,11 @@ def is_valid(sg, logger, args):
         if not sg_type:
             logger.warning(
                 '"%s" setting refers to a %s entity field ("%s") that doesn\'t exist, please fix.'
-                % (name, args["entity_type"], args[name],)
+                % (
+                    name,
+                    args["entity_type"],
+                    args[name],
+                )
             )
             return
 
@@ -134,25 +142,25 @@ def is_valid(sg, logger, args):
 
 def update_cut_duration_timecode(sg, logger, event, args):
     """
-    Desired logic:
+        Desired logic:
 
-    Part 1 - Updates to Cut In and Cut Out
+        Part 1 - Updates to Cut In and Cut Out
 
-    When the Cut In or Cut Out values are updated, calculate the following fields:
-`
-         Cut Length = Cut Out - Cut In + 1
-         Cut Length R/T = Cut Length in timecode
+        When the Cut In or Cut Out values are updated, calculate the following fields:
+    `
+             Cut Length = Cut Out - Cut In + 1
+             Cut Length R/T = Cut Length in timecode
 
-    Part 2 - Updates to Cut Length
+        Part 2 - Updates to Cut Length
 
-    When the Cut Length value is updated by hand, calculate the following field:
-`
-         Cut Length R/T = Cut Length in timecode
+        When the Cut Length value is updated by hand, calculate the following field:
+    `
+             Cut Length R/T = Cut Length in timecode
 
-    :param sg: Shotgun API handle.
-    :param logger: Logger instance.
-    :param event: A Shotgun EventLogEntry entity dictionary.
-    :param args: Any additional misc arguments passed through this plugin.
+        :param sg: Shotgun API handle.
+        :param logger: Logger instance.
+        :param event: A Shotgun EventLogEntry entity dictionary.
+        :param args: Any additional misc arguments passed through this plugin.
     """
 
     # Return if we don't have all the field values we need.

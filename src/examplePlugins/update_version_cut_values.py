@@ -89,7 +89,10 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type):
     if not sg_type:
         logger.warning(
             '%s entity field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_name,)
+            % (
+                entity_type,
+                field_name,
+            )
         )
         return
 
@@ -163,8 +166,14 @@ def is_valid(sg, logger, args):
             "entity": "Version",
             "sg_type": "number",
         },
-        "default_head_in": {"type": [int], "allow_empty": False,},
-        "default_tail_out": {"type": [int], "allow_empty": False,},
+        "default_head_in": {
+            "type": [int],
+            "allow_empty": False,
+        },
+        "default_tail_out": {
+            "type": [int],
+            "allow_empty": False,
+        },
     }
 
     for name, checks in args_to_check.items():

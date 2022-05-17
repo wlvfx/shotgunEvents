@@ -105,7 +105,9 @@ def task_status_changed(sg, logger, event, args):
 
     # Grab the Shotgun Status entity the Task was set to.
     new_task_status = sg.find_one(
-        "Status", [["code", "is", sg_task["sg_status_list"]]], [status_mapping_field],
+        "Status",
+        [["code", "is", sg_task["sg_status_list"]]],
+        [status_mapping_field],
     )
 
     # Return if we can't find our Status entity (would be pretty weird).

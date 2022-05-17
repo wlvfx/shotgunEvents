@@ -36,11 +36,19 @@ def registerCallbacks(reg):
     }
 
     reg.registerCallback(
-        script_name, script_key, find_task_versions, task_event_filter, args,
+        script_name,
+        script_key,
+        find_task_versions,
+        task_event_filter,
+        args,
     )
 
     reg.registerCallback(
-        script_name, script_key, update_version_task_field, version_event_filter, args,
+        script_name,
+        script_key,
+        update_version_task_field,
+        version_event_filter,
+        args,
     )
     reg.logger.debug("Registered callbacks.")
 
@@ -65,14 +73,25 @@ def find_task_versions(sg, logger, event, args):
     entity_id = event["meta"]["entity_id"]
 
     # Re-query our Task to get the linked Shot.
-    task = sg.find_one("Task", [["id", "is", entity_id]], ["entity"],)
+    task = sg.find_one(
+        "Task",
+        [["id", "is", entity_id]],
+        ["entity"],
+    )
 
     # Get all Versions linked to the same Shot as our Task.
-    versions = sg.find("Version", [["entity", "is", task["entity"]]],)
+    versions = sg.find(
+        "Version",
+        [["entity", "is", task["entity"]]],
+    )
 
     # If a Version is linked to our Task, run the trigger on it.
     for version in versions:
-        fake_event = {"meta": {"entity_id": version["id"],}}
+        fake_event = {
+            "meta": {
+                "entity_id": version["id"],
+            }
+        }
         update_version_task_field(sg, logger, fake_event, args)
 
 
@@ -154,12 +173,17 @@ def update_version_task_field(sg, logger, event, args):
     if not linked_task:
         logger.debug(
             "No Task attached to Version with linked entity %s and %s field value, Skipping."
-            % (entity_id, args["matched_version_field"],)
+            % (
+                entity_id,
+                args["matched_version_field"],
+            )
         )
         return
 
     # Update our Version with the linked Task.
     sg.update(
-        "Version", entity_id, {"sg_task": linked_task},
+        "Version",
+        entity_id,
+        {"sg_task": linked_task},
     )
     logger.debug('Updated "sg_task" for Version with id %s' % entity_id)

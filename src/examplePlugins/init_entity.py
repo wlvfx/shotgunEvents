@@ -138,7 +138,10 @@ def is_valid(sg, logger, args):
                 if field_name not in entity_schema.keys():
                     logger.warning(
                         '%s entity field "%s" does not exist in Shotgun, please fix.'
-                        % (args["entity_type"], field_name,)
+                        % (
+                            args["entity_type"],
+                            field_name,
+                        )
                     )
                     return
 
@@ -156,7 +159,11 @@ def is_valid(sg, logger, args):
                 if field_value_type not in valid_value_types:
                     logger.warning(
                         'Initial value for SG field "%s" is type "%s" but should be of type(s) "%s," please fix.'
-                        % (field_name, field_value_type, valid_value_types,)
+                        % (
+                            field_name,
+                            field_value_type,
+                            valid_value_types,
+                        )
                     )
                     return
                 # if we have a list field, make sure the initial value is valid
@@ -170,7 +177,11 @@ def is_valid(sg, logger, args):
                     if valid_values and field_value not in valid_values:
                         logger.warning(
                             'Initial value for SG field "%s" is "%s" but must be one of the following: "%s".'
-                            % (field_name, str(field_value), ", ".join(valid_values),)
+                            % (
+                                field_name,
+                                str(field_value),
+                                ", ".join(valid_values),
+                            )
                         )
                         return
 
@@ -200,7 +211,9 @@ def init_entity(sg, logger, event, args):
     # been populated by a user
     fields_to_update = list(args["initial_data"].keys())
     entity = sg.find_one(
-        entity_type, args["filters"] + [["id", "is", entity_id]], fields_to_update,
+        entity_type,
+        args["filters"] + [["id", "is", entity_id]],
+        fields_to_update,
     )
 
     # Bail if we don't have an entity. This would happen if user-specified

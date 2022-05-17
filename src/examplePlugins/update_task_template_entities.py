@@ -186,7 +186,11 @@ def check_entity_schema(
     if not sg_type:
         logger.warning(
             '%s entity %s field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_types, field_name,)
+            % (
+                entity_type,
+                field_types,
+                field_name,
+            )
         )
         return
 
@@ -194,7 +198,11 @@ def check_entity_schema(
     if sg_type not in field_types:
         logger.warning(
             'SG field "%s" is type "%s" but should be of type(s) "%s," please fix.'
-            % (field_name, sg_type, field_types,)
+            % (
+                field_name,
+                sg_type,
+                field_types,
+            )
         )
         return
 
@@ -214,7 +222,10 @@ def check_entity_schema(
         if missing_values:
             logger.warning(
                 'SG field "%s" does not contain required value(s) "%s", please fix.'
-                % (field_name, missing_values,)
+                % (
+                    field_name,
+                    missing_values,
+                )
             )
             return
 
@@ -238,7 +249,10 @@ def update_entities(sg, logger, event, args):
         return
 
     # Re-query our Task Template.
-    task_template = sg.find_one("TaskTemplate", [["id", "is", event["entity"]["id"]]],)
+    task_template = sg.find_one(
+        "TaskTemplate",
+        [["id", "is", event["entity"]["id"]]],
+    )
 
     # Bail if we don't have a Task Template.
     if not task_template:
@@ -260,7 +274,9 @@ def update_entities(sg, logger, event, args):
 
     # Grab all the Tasks in the template.
     template_tasks = sg.find(
-        "Task", [["task_template", "is", task_template]], task_schema.keys(),
+        "Task",
+        [["task_template", "is", task_template]],
+        task_schema.keys(),
     )
 
     # Grab Project records based on project_ids args.
@@ -286,7 +302,10 @@ def update_entities(sg, logger, event, args):
         # Grab all entities attached to the Task Template in relevant Projects.
         entities = sg.find(
             entity_type,
-            [["task_template", "is", task_template], ["project", "in", projects],],
+            [
+                ["task_template", "is", task_template],
+                ["project", "in", projects],
+            ],
             ["project"],
         )
 
@@ -406,11 +425,18 @@ def update_entities(sg, logger, event, args):
                 # If the Task doesn't exist on the entity, add it.
                 if not assigned_to_entity:
                     batch_data.append(
-                        {"request_type": "create", "entity_type": "Task", "data": data,}
+                        {
+                            "request_type": "create",
+                            "entity_type": "Task",
+                            "data": data,
+                        }
                     )
                     logger.info(
                         "Will create %s Task on entity with id %s."
-                        % (template_task["content"], entity["id"],)
+                        % (
+                            template_task["content"],
+                            entity["id"],
+                        )
                     )
 
     # And now the scary part.

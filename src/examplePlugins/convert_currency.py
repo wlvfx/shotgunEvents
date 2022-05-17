@@ -55,7 +55,11 @@ def registerCallbacks(reg):
     # Register our callback with the Shotgun_%s_Change event and tell the logger
     # about it.
     reg.registerCallback(
-        script_name, script_key, convert_currency, event_filter, args,
+        script_name,
+        script_key,
+        convert_currency,
+        event_filter,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -112,7 +116,11 @@ def is_valid(sg, logger, args):
         if not sg_type:
             raise ValueError(
                 '"%s" setting refers to a %s entity field ("%s") that doesn\'t exist, please fix.'
-                % (name, args["entity_type"], args[name],)
+                % (
+                    name,
+                    args["entity_type"],
+                    args[name],
+                )
             )
 
         # Make sure the field is the correct Shotgun type.
@@ -162,7 +170,10 @@ def convert_currency(sg, logger, event, args):
     if not cost[args["from_currency_field"]] or not cost[args["exchange_rate_field"]]:
         logger.debug(
             "Missing %s or %s value, skipping."
-            % (args["from_currency_field"], args["exchange_rate_field"],)
+            % (
+                args["from_currency_field"],
+                args["exchange_rate_field"],
+            )
         )
         return
 
@@ -198,4 +209,11 @@ def convert_currency(sg, logger, event, args):
     )
 
     # Tell the logger about it.
-    logger.debug("Updated %s with ID %s: %s" % (args["entity_type"], entity_id, cost,))
+    logger.debug(
+        "Updated %s with ID %s: %s"
+        % (
+            args["entity_type"],
+            entity_id,
+            cost,
+        )
+    )

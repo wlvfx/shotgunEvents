@@ -255,8 +255,7 @@ class Engine(object):
     """
 
     def __init__(self, configPath):
-        """
-        """
+        """ """
         self._continue = True
         self._eventIdData = {}
 
@@ -1332,8 +1331,7 @@ class LinuxDaemon(daemonizer.Daemon):
 
 
 def main():
-    """
-    """
+    """ """
     if CURRENT_PYTHON_VERSION <= PYTHON_26:
         print(
             "Python 2.5 and older is not supported anymore. Please use Python 2.6 or newer."

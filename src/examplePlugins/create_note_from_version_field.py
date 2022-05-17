@@ -120,7 +120,10 @@ def is_valid(sg, logger, args):
     if args["sg_note_type"] not in valid_note_types:
         logger.warning(
             "%s not in Note schema. Valid types are %s, please fix."
-            % (args["sg_note_type"], valid_note_types,)
+            % (
+                args["sg_note_type"],
+                valid_note_types,
+            )
         )
         return
 

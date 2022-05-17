@@ -140,13 +140,20 @@ def update_field_value(sg, logger, event, args):
     if event["meta"]["new_value"] == args["from_value"]:
         try:
             sg.update(
-                entity_type, entity_id, {args["to_field"]: args["to_value"]},
+                entity_type,
+                entity_id,
+                {args["to_field"]: args["to_value"]},
             )
 
             # Tell the logger about it.
             logger.info(
                 "Updated %s with id %s with new %s value %s."
-                % (entity_type, entity_id, args["to_field"], args["to_value"],)
+                % (
+                    entity_type,
+                    entity_id,
+                    args["to_field"],
+                    args["to_value"],
+                )
             )
         except Exception as e:
             logger.error(

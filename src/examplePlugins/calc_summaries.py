@@ -33,7 +33,10 @@ def registerCallbacks(reg):
     # that field will have been removed.
     args = {
         "field_to_update": "sg_description",
-        "link_fields": {"Asset": "project", "Shot": "project",},
+        "link_fields": {
+            "Asset": "project",
+            "Shot": "project",
+        },
         "summarize": [
             {
                 "entity_type": "Asset",
@@ -72,7 +75,11 @@ def registerCallbacks(reg):
     # Register our callback with the Shotgun_%s_Change event and tell the logger
     # about it.
     reg.registerCallback(
-        script_name, script_key, calculate_summaries, event_filters, args,
+        script_name,
+        script_key,
+        calculate_summaries,
+        event_filters,
+        args,
     )
     reg.logger.debug("Registered callback.")
 
@@ -265,7 +272,10 @@ def check_entity_schema(sg, logger, entity_type, field_name, field_type=None):
     if not sg_type:
         logger.warning(
             '%s entity field "%s" does not exist in Shotgun, please fix.'
-            % (entity_type, field_name,)
+            % (
+                entity_type,
+                field_name,
+            )
         )
         return
 
@@ -306,13 +316,19 @@ def calculate_summaries(sg, logger, event, args):
 
     # Re-query the entity.
     event_entity = sg.find_one(
-        entity_type, [["id", "is", entity_id]], [link_fields[entity_type]],
+        entity_type,
+        [["id", "is", entity_id]],
+        [link_fields[entity_type]],
     )
 
     # Bail if the entity no longer exists.
     if not event_entity:
         logger.warning(
-            "%s with id %s no longer exists, skipping." % (entity_type, entity_id,)
+            "%s with id %s no longer exists, skipping."
+            % (
+                entity_type,
+                entity_id,
+            )
         )
         return
 
@@ -368,7 +384,10 @@ def calculate_summaries(sg, logger, event, args):
     if not field_type:
         logger.debug(
             "Could not get type for %s field %s, skipping."
-            % (summarize_entity["type"], args["field_to_update"],)
+            % (
+                summarize_entity["type"],
+                args["field_to_update"],
+            )
         )
         return
 
